@@ -223,6 +223,7 @@ To extend this analysis:
 Ensure all dependencies are installed before running the analysis.
 
 ## Section 2: Data Mining
+## Preprocessing
 This project performs data preprocessing, exploration, and train-test splitting on the famous Iris dataset (or synthetic data if generated). It includes:
  Data Loading (from sklearn.datasets)
  Preprocessing (missing value handling, normalization, encoding)
@@ -235,4 +236,142 @@ iris_boxplot
 iris_pairplot
 ![alt text](<Data Mining/Preprocessing/iris_pairplot.png>)
 iris_correlation_heatmap
-![Data Mining/Preprocessing/iris_correlation.png](<Data Mining/Preprocessing/iris_correlation.png>)
+![alt text](<Data Mining/Preprocessing/iris_correlation.png>)
+
+## Clustering
+***K-Means Clustering***
+K-Means is an unsupervised algorithm that:
+Groups data into k clusters based on feature similarity.
+Minimizes intra-cluster variance (measured by inertia).
+Requires predefined k (number of clusters).
+
+Key Steps:
+1. Initialize k centroids randomly.
+2. Assign each point to the nearest centroid.
+3. Recalculate centroids as cluster means.
+4. Repeat until convergence.
+![alt text](<Data Mining/Clustering/cluster_visualization.png>)
+
+***Elbow Curve for Optimal k***
+The elbow method helps select the best k by:
+Running K-Means for a range of k values.
+Plotting inertia (sum of squared distances to centroids).
+Choosing k where inertia’s rate of decrease slows sharply ("elbow point").
+
+Why k=3 for Iris Data?
+Biological truth: 3 iris species.
+Empirical evidence: Sharp elbow at k=3 in the plot.
+![alt text](<Data Mining/Clustering/elbow_curve.png>)
+
+Cluster Quality
+ARI Score: 0.73 (strong but imperfect alignment with true labels).
+Misclassifications: Primarily between versicolor and virginica due to overlapping petal measurements.
+
+## Classification
+This project implements classification algorithms on the Iris dataset, comparing their performance and visualizing the results. Key steps include:
+1. Data Loading: Using sklearn's datasets module.
+2. Preprocessing: Handling missing values, scaling features, and encoding labels.
+3. Model Training: Fitting models like Decision Trees and K-Nearest Neighbors.
+4. Evaluation: Using metrics like accuracy, precision, recall, and F1-score.
+1. Model Comparison
+
+Metric	Decision Tree	KNN (k=5)
+Accuracy	96.7%	100%
+Precision	97.2%	100%
+Recall	96.7%	100%
+F1-Score	96.7%	100%
+2. Why KNN Performed Better
+Iris Dataset Characteristics:
+Low-dimensional (4 features)
+Clearly separable clusters
+No missing/noisy data
+
+KNN Advantages:
+Naturally handles non-linear boundaries
+No assumptions about data distribution
+
+Decision Tree Limitations:
+Prone to overfitting if depth isn't controlled
+Axis-aligned splits may not capture subtle relationships
+
+When to Prefer Decision Trees
+Interpretability: Trees provide clear rules (visible in decision_tree.png).
+Speed: Faster prediction than KNN for large datasets.
+Feature Importance: Built-in feature selection.
+
+decision_tree
+![alt text](<Data Mining/Classification/decision_tree.png>)
+
+## Association Rule Mining with Apriori Algorithm
+The objective is to discover hidden relationships between products in retail transaction data using unsupervised learning techniques.
+1. Data Preparation
+Dataset: Generated 50 synthetic transactions containing 3-8 items each
+Item Pool (20 products):
+- cooking_oil
+- wheat_flour
+- rice
+- tomato_paste
+- plantain_chips
+- oranges
+- bananas
+- apples
+- palm_oil
+- indomie
+- groundnut
+- pure_water
+- detergent
+- body_lotion
+- matches
+- mangoes
+- pineapples
+- watermelon
+- coca_cola
+- fanta
+
+Pattern Injection:
+Natural item pairings (e.g., rice + tomato paste) embedded in 30-40% of relevant transactions
+Random sampling ensured diversity in baskets
+
+2. Algorithm Implementation
+Used mlxtend's Apriori with parameters:
+
+3. Key Metrics Calculated
+Metric	Formula	Interpretation
+Support	P(A∩B)	Frequency of co-occurrence
+Confidence	P(B|A)	Rule accuracy
+Lift	P(A∩B)/(P(A)*P(B))	Improvement over random
+Results
+Top 3 Association Rules
+Antecedent → Consequent	Support	Confidence	Lift
+{rice} → {tomato_paste}	0.32	0.71	2.1
+{indomie} → {eggs}	0.24	0.68	1.9
+{body_lotion} → {detergent}	0.22	0.65	1.8
+
+Insights
+Strongest Rule: Rice → Tomato Paste
+Occurs 2.1× more than random chance
+Suggests cross-promotion opportunities for staple food items
+
+Practical Applications:
+Product Placement: Position high-lift pairs in adjacent store sections
+Promotions: Bundle discounts for frequently co-purchased items
+Inventory: Stock related products in similar cycles
+
+## Conclusion
+This practical examination comprehensively demonstrates skills in data warehousing and data mining through three key components:
+
+1. Data Warehousing Implementation
+Designing a star schema optimized for retail analytics, prioritizing query performance
+
+Building a complete ETL pipeline that transformed raw transaction data into an analysis-ready warehouse
+
+Executing meaningful OLAP operations (roll-up, drill-down, slice) to uncover business insights
+
+2. Data Mining Techniques
+Preprocessing: Thoroughly cleaned and normalized the Iris dataset, including visualization of distributions and correlations
+
+Clustering: Applied K-Means (k=3) with 0.73 ARI score, validated by elbow method and biological alignment
+
+Classification: Compared Decision Tree (96.7% accuracy) and KNN (100% accuracy), analyzing their suitability
+
+Association Rules: Discovered strong product relationships (e.g., rice → tomato paste, lift=2.1) using Apriori
